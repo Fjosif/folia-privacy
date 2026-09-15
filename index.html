@@ -51,9 +51,11 @@
 
       <h2>1. Data v zařízení</h2>
       <ul>
-        <li><strong>SQLCipher (šifrovaná Room DB)</strong> — jídelníček, potraviny (včetně vlastních fotek WebP), hmotnost, cvičení, cíle, tělesné míry. Klíč je v Android Keystore.</li>
+        <li><strong>SQLCipher (šifrovaná Room DB)</strong> — jídelníček, potraviny, hmotnost, cvičení, cíle, tělesné míry. Klíč je v Android Keystore.</li>
         <li><strong>DataStore</strong> — hydratace, menstruační cyklus, téma, zámek aplikace, preference Health Connect. Systémová cloudová záloha Androidu je vypnutá.</li>
       </ul>
+
+      <p>Fotky vlastních jídel jsou samostatné WebP soubory v soukromé složce aplikace <code>food_images/</code>, mimo SQLCipher. Aplikace tyto lokální soubory samostatně nešifruje; přístup chrání sandbox Androidu. Pokud jsou součástí volitelné zálohy na Google Disk, šifrují se spolu s celou zálohou vaším heslem.</p>
 
       <h2>2. Zpracování na zařízení</h2>
       <ul>
