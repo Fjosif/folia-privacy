@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="cs">
+<html lang="en">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Folia — Zásady ochrany soukromí</title>
+  <title>Folia — Privacy Policy / Zásady ochrany soukromí</title>
   <style>
     :root { --bg:#f4f7f2; --ink:#142018; --muted:#4a5a50; --accent:#2f6b4f; --card:#fff; }
     * { box-sizing: border-box; }
@@ -20,13 +20,17 @@
     h2 { font-size: 1.15rem; margin-top: 2rem; color: var(--accent); }
     p, li { color: var(--muted); }
     .meta { color: var(--muted); font-size: 0.95rem; margin-bottom: 1.5rem; }
+    .lang { font-size: 0.95rem; margin-bottom: 1rem; }
+    .lang a { margin-right: 12px; }
     .card {
       background: var(--card);
       border-radius: 16px;
       padding: 20px 22px;
       box-shadow: 0 8px 30px rgba(20, 32, 24, 0.06);
+      margin-bottom: 32px;
     }
     a { color: var(--accent); }
+    code { font-size: 0.92em; }
     .warn {
       border-left: 4px solid var(--accent);
       padding-left: 12px;
@@ -37,45 +41,112 @@
 <body>
   <main>
     <h1>Folia</h1>
-    <p class="meta">Zásady ochrany soukromí · platné od 15. 9. 2026 · balíček <code>com.rocketcalories.app</code></p>
-    <div class="card">
+    <p class="meta">Privacy Policy · effective 15 September 2026 · package <code>com.rocketcalories.app</code></p>
+    <p class="lang"><a href="#en">English</a> <a href="#cs">Česky</a></p>
+
+    <!-- ===================== ENGLISH ===================== -->
+    <section id="en" class="card">
+      <div class="warn">
+        <p><strong>Health notice:</strong> Folia is not a medical device and is not intended to diagnose, treat or prevent any disease. Calorie, macronutrient, weight and cycle figures are estimates. Consult a physician or qualified professional before making health decisions.</p>
+      </div>
+
+      <p>
+        Folia is a mobile app for calorie tables, a meal diary and weight tracking, published by Filip Josif (the “developer”, “we”).
+        <strong>We operate no user cloud and no user accounts.</strong> Your personal data stays on your phone unless you yourself turn on the encrypted backup to your own Google Drive.
+      </p>
+
+      <h2>1. Data stored on your device</h2>
+      <ul>
+        <li><strong>SQLCipher (encrypted Room database)</strong> — meal diary, foods, weight, exercise, goals, body measurements. The key lives in the Android Keystore.</li>
+        <li><strong>DataStore</strong> — hydration, menstrual cycle, theme, app lock, Health Connect preferences. Android system cloud backup (Auto Backup) is disabled.</li>
+        <li><strong>Custom meal photos</strong> are separate WebP files in the app‑private folder <code>food_images/</code>, outside SQLCipher. The app does not separately encrypt these local files; access is protected by the Android app sandbox. When included in the optional Google Drive backup they are encrypted together with the rest of the backup using your passphrase.</li>
+        <li><strong>Google account e‑mail and account ID</strong> (only after you sign in for backup) — stored locally to show which account the backup belongs to.</li>
+      </ul>
+
+      <h2>2. On‑device processing</h2>
+      <ul>
+        <li><strong>Barcode scanning (Google ML Kit, bundled model)</strong> — camera frames are processed locally to read EAN/UPC codes. Camera frames and meal photos are never sent to the developer.</li>
+        <li><strong>ML Kit diagnostics (Google)</strong> — when you use the scanner, the ML Kit SDK automatically sends diagnostic and usage data to Google: device information (manufacturer, model, OS version, available ML accelerators), the app package name and version, a per‑installation identifier that is not intended to identify you or your device, performance metrics (latency), API configuration (image format and resolution), event types and error codes. This data is sent over HTTPS, is governed by the <a href="https://policies.google.com/privacy">Google Privacy Policy</a>, and the developer does not receive it. In the Google Play Data safety section it is declared as <em>Diagnostics</em> and <em>Device or other IDs</em>.</li>
+        <li><strong>Health Connect (read)</strong> — with your permission the app reads weight and active calories burned from Health Connect. This happens entirely on the device.</li>
+      </ul>
+
+      <h2>3. Data that leaves your device (only when you use the feature)</h2>
+      <ul>
+        <li><strong><a href="https://world.openfoodfacts.org">Open Food Facts</a></strong> — when you search or scan, the search text or barcode is sent over HTTPS to <code>world.openfoodfacts.org</code> together with a technical User‑Agent header identifying the app (name, version, project URL, link to this policy). We do not store your queries; the query is used only to fulfil the request. Nutrition data and product images may be downloaded from Open Food Facts servers/CDN. Open Food Facts’ own privacy policy applies to their servers.</li>
+        <li><strong><a href="https://fdc.nal.usda.gov">USDA FoodData Central</a></strong> — optional fallback: the same search text is sent over HTTPS to <code>api.nal.usda.gov</code> with the developer’s API key (not yours).</li>
+        <li><strong>Google Sign‑In and Google Drive (optional backup)</strong> — when you sign in, Google provides the app with your account e‑mail address and Google account ID, used solely to authorise the backup (scope <code>drive.appdata</code>). The backup snapshot (diary, weights, cycle, goals, custom foods including photos) is encrypted <em>on your device</em> with AES‑256‑GCM using a key derived from your passphrase (PBKDF2‑HMAC‑SHA256, 210 000 iterations, minimum 12 characters) before it is uploaded to the hidden <em>appDataFolder</em> of <strong>your own</strong> Google Drive. Neither the developer nor Google can read the backup. The passphrase never leaves your device; if you lose it, the backup cannot be recovered.</li>
+        <li><strong>Health Connect (write)</strong> — if you enable weight sync, the app writes your weight entries into Health Connect, i.e. transfers them to another app on your device, which you authorised via the Health Connect permission dialog. Nothing is sent to the developer’s servers. The permission rationale is shown in the app before the request.</li>
+        <li><strong>Huawei Health</strong> — the app only opens the Huawei Health app or its store page; no Huawei SDK is included and no data is transferred.</li>
+      </ul>
+
+      <h2>4. What we do not do</h2>
+      <p>No user accounts or user data on developer servers, no advertising, no third‑party analytics or crash‑reporting SDKs, no sale of personal data, no location inference from IP addresses. All network traffic uses HTTPS/TLS.</p>
+
+      <h2>5. Retention and deletion</h2>
+      <ul>
+        <li><strong>On the device:</strong> Privacy → <em>Delete all data</em> in the app, or uninstall the app.</li>
+        <li><strong>Google Drive backup:</strong> Google Account → Security → Third‑party apps &amp; services → Folia → <em>Delete all app data</em>; or disconnect the Google account in the app’s Privacy screen.</li>
+        <li><strong>Health Connect:</strong> revoke Folia’s permissions in Health Connect settings.</li>
+      </ul>
+      <p>Because the developer holds no copy of your data, there is nothing further to request from us; for questions use the contact below.</p>
+
+      <h2>6. Children</h2>
+      <p>The app is not intended for children under 13.</p>
+
+      <h2>7. Contact</h2>
+      <p>Data controller and privacy contact: Filip Josif, <a href="mailto:info@rocketweb.cz">info@rocketweb.cz</a>.</p>
+
+      <h2>8. Changes</h2>
+      <p>Material changes are published by updating this page and its effective date.</p>
+    </section>
+
+    <!-- ===================== ČESKY ===================== -->
+    <section id="cs" class="card" lang="cs">
+      <p class="meta">Zásady ochrany soukromí · platné od 15. 9. 2026 · balíček <code>com.rocketcalories.app</code></p>
+
       <div class="warn">
         <p><strong>Zdravotní upozornění:</strong> Folia není zdravotnický prostředek a neslouží k diagnostice, léčbě ani prevenci onemocnění. Údaje o kaloriích, makrech, hmotnosti a cyklu jsou orientační. Zdravotní rozhodnutí konzultujte s lékařem nebo kvalifikovaným odborníkem.</p>
       </div>
 
       <p>
-        Folia je mobilní aplikace pro kalorické tabulky, jídelníček a hmotnost.
-        <strong>Nemáme vlastní cloud pro uživatelské profily</strong> — osobní data zůstávají ve vašem telefonu,
-        pokud sami nezapnete šifrovanou zálohu na váš Google Disk.
+        Folia je mobilní aplikace pro kalorické tabulky, jídelníček a hmotnost, kterou vydává Filip Josif („vývojář“, „my“).
+        <strong>Neprovozujeme žádný uživatelský cloud ani uživatelské účty.</strong> Osobní data zůstávají ve vašem telefonu, pokud sami nezapnete šifrovanou zálohu na váš vlastní Google Disk.
       </p>
 
       <h2>1. Data v zařízení</h2>
       <ul>
         <li><strong>SQLCipher (šifrovaná Room DB)</strong> — jídelníček, potraviny, hmotnost, cvičení, cíle, tělesné míry. Klíč je v Android Keystore.</li>
-        <li><strong>DataStore</strong> — hydratace, menstruační cyklus, téma, zámek aplikace, preference Health Connect. Systémová cloudová záloha Androidu je vypnutá.</li>
+        <li><strong>DataStore</strong> — hydratace, menstruační cyklus, téma, zámek aplikace, preference Health Connect. Systémová cloudová záloha Androidu (Auto Backup) je vypnutá.</li>
+        <li><strong>Fotky vlastních jídel</strong> jsou samostatné WebP soubory v soukromé složce aplikace <code>food_images/</code>, mimo SQLCipher. Aplikace tyto lokální soubory samostatně nešifruje; přístup chrání sandbox Androidu. Pokud jsou součástí volitelné zálohy na Google Disk, šifrují se spolu s celou zálohou vaším heslem.</li>
+        <li><strong>E‑mail a ID Google účtu</strong> (jen po přihlášení kvůli záloze) — uloženy lokálně, aby bylo vidět, ke kterému účtu záloha patří.</li>
       </ul>
-
-      <p>Fotky vlastních jídel jsou samostatné WebP soubory v soukromé složce aplikace <code>food_images/</code>, mimo SQLCipher. Aplikace tyto lokální soubory samostatně nešifruje; přístup chrání sandbox Androidu. Pokud jsou součástí volitelné zálohy na Google Disk, šifrují se spolu s celou zálohou vaším heslem.</p>
 
       <h2>2. Zpracování na zařízení</h2>
       <ul>
-        <li><strong>Google ML Kit Barcode Scanning</strong> — obraz z kamery se zpracovává lokálně kvůli EAN/UPC. Folia neodesílá snímky kamery ani fotky jídel na servery Folia.</li>
-        <li>Služby Google Play / ML Kit mohou podle podmínek Googlu shromažďovat diagnostické nebo provozní údaje — viz zásady Googlu.</li>
+        <li><strong>Sken čárových kódů (Google ML Kit, model v aplikaci)</strong> — obraz z kamery se zpracovává lokálně kvůli EAN/UPC. Snímky kamery ani fotky jídel se vývojáři nikdy neodesílají.</li>
+        <li><strong>Diagnostika ML Kit (Google)</strong> — při použití skeneru odesílá SDK ML Kit společnosti Google automaticky diagnostické a provozní údaje: informace o zařízení (výrobce, model, verze OS, dostupné ML akcelerátory), název balíčku a verzi aplikace, identifikátor instalace, který nemá identifikovat vás ani zařízení, výkonové metriky (latence), konfiguraci API (formát a rozlišení obrazu), typy událostí a chybové kódy. Přenos je přes HTTPS, řídí se <a href="https://policies.google.com/privacy?hl=cs">Zásadami ochrany soukromí Google</a> a vývojář tato data nedostává. V sekci Data safety na Google Play jsou deklarována jako <em>Diagnostics</em> a <em>Device or other IDs</em>.</li>
+        <li><strong>Health Connect (čtení)</strong> — po vašem souhlasu aplikace čte z Health Connect hmotnost a aktivně spálené kalorie. Vše probíhá v zařízení.</li>
       </ul>
 
-      <h2>3. Přenos dat (jen při použití funkce)</h2>
+      <h2>3. Přenos dat ze zařízení (jen při použití funkce)</h2>
       <ul>
-        <li><a href="https://world.openfoodfacts.org">Open Food Facts</a> — při hledání/skenu se odešle název nebo EAN; mohou se stáhnout nutriční údaje a fotka výrobku z jejich CDN.</li>
-        <li><a href="https://fdc.nal.usda.gov">USDA FoodData Central</a> — volitelný fallback přes HTTPS (API klíč je v APK).</li>
-        <li><strong>Google Sign-In / Drive App Data</strong> — jen po zapnutí zálohy; šifrovaný snapshot (včetně vlastních WebP) do <em>appDataFolder</em> vašeho účtu (scope <code>drive.appdata</code>).</li>
-        <li><strong>Health Connect</strong> — po souhlasu: čtení/zápis hmotnosti; čtení aktivně spálených kcal. Data zůstávají lokálně; Folia je neposílá na vlastní servery.</li>
+        <li><strong><a href="https://world.openfoodfacts.org">Open Food Facts</a></strong> — při hledání nebo skenu se odešle hledaný text nebo čárový kód přes HTTPS na <code>world.openfoodfacts.org</code> spolu s technickou hlavičkou User‑Agent identifikující aplikaci (název, verze, URL projektu, odkaz na tyto zásady). Dotazy neukládáme; slouží jen k vyřízení požadavku. Nutriční údaje a fotky výrobků se mohou stahovat ze serverů/CDN Open Food Facts. Na jejich servery se vztahují jejich vlastní zásady.</li>
+        <li><strong><a href="https://fdc.nal.usda.gov">USDA FoodData Central</a></strong> — volitelný fallback: stejný hledaný text přes HTTPS na <code>api.nal.usda.gov</code> s API klíčem vývojáře (ne vaším).</li>
+        <li><strong>Google přihlášení a Google Disk (volitelná záloha)</strong> — po přihlášení předá Google aplikaci e‑mail a ID vašeho účtu, které slouží výhradně k autorizaci zálohy (scope <code>drive.appdata</code>). Snapshot zálohy (jídelníček, hmotnosti, cyklus, cíle, vlastní jídla včetně fotek) se šifruje <em>ve vašem zařízení</em> algoritmem AES‑256‑GCM klíčem odvozeným z vašeho hesla (PBKDF2‑HMAC‑SHA256, 210 000 iterací, min. 12 znaků) a teprve pak nahraje do skryté složky <em>appDataFolder</em> <strong>vašeho</strong> Google Disku. Zálohu nepřečte vývojář ani Google. Heslo nikdy neopouští zařízení; při jeho ztrátě nelze zálohu obnovit.</li>
+        <li><strong>Health Connect (zápis)</strong> — pokud zapnete synchronizaci hmotnosti, aplikace zapisuje vaše záznamy hmotnosti do Health Connect, tj. předává je jiné aplikaci v zařízení, což jste povolili v dialogu oprávnění Health Connect. Na servery vývojáře se nic neodesílá. Zdůvodnění oprávnění se zobrazuje v aplikaci před žádostí.</li>
+        <li><strong>Huawei Health</strong> — aplikace jen otevře aplikaci Huawei Health nebo její stránku v obchodě; žádné Huawei SDK není součástí a žádná data se nepředávají.</li>
       </ul>
 
-      <h2>4. Co neprovozujeme</h2>
-      <p>Vlastní cloud uživatelů, reklamy ani analytiku třetích stran pro prodej dat.</p>
+      <h2>4. Co neděláme</h2>
+      <p>Žádné uživatelské účty ani uživatelská data na serverech vývojáře, žádná reklama, žádné analytické ani crash‑reporting SDK třetích stran, žádný prodej osobních dat, žádné odvozování polohy z IP adresy. Veškerá síťová komunikace je přes HTTPS/TLS.</p>
 
       <h2>5. Uchování a smazání</h2>
-      <p>Odinstalace, Soukromí → Smazat všechna lokální data, odvolání oprávnění Health Connect / Google, smazání App Data zálohy na Disku. Heslo zálohy (min. 12 znaků) není součástí APK.</p>
+      <ul>
+        <li><strong>V zařízení:</strong> Soukromí → <em>Smazat všechna data</em> v aplikaci, nebo odinstalace.</li>
+        <li><strong>Záloha na Google Disku:</strong> Účet Google → Zabezpečení → Aplikace a služby třetích stran → Folia → <em>Smazat všechna data aplikace</em>; nebo odpojení Google účtu v obrazovce Soukromí.</li>
+        <li><strong>Health Connect:</strong> odvolání oprávnění Folia v nastavení Health Connect.</li>
+      </ul>
+      <p>Protože vývojář nemá žádnou kopii vašich dat, není co dalšího od nás požadovat; s dotazy použijte kontakt níže.</p>
 
       <h2>6. Děti</h2>
       <p>Aplikace není určena dětem mladším 13 let.</p>
@@ -85,7 +156,7 @@
 
       <h2>8. Změny</h2>
       <p>Podstatné změny zveřejníme aktualizací této stránky a data účinnosti.</p>
-    </div>
+    </section>
   </main>
 </body>
 </html>
