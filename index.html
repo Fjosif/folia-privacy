@@ -5,13 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Folia — Zásady ochrany soukromí</title>
   <style>
-    :root {
-      --bg: #f4f7f2;
-      --ink: #142018;
-      --muted: #4a5a50;
-      --accent: #2f6b4f;
-      --card: #ffffff;
-    }
+    :root { --bg:#f4f7f2; --ink:#142018; --muted:#4a5a50; --accent:#2f6b4f; --card:#fff; }
     * { box-sizing: border-box; }
     body {
       margin: 0;
@@ -21,11 +15,7 @@
       color: var(--ink);
       line-height: 1.6;
     }
-    main {
-      max-width: 720px;
-      margin: 0 auto;
-      padding: 48px 20px 80px;
-    }
+    main { max-width: 720px; margin: 0 auto; padding: 48px 20px 80px; }
     h1 { font-size: 2rem; margin: 0 0 8px; letter-spacing: -0.02em; }
     h2 { font-size: 1.15rem; margin-top: 2rem; color: var(--accent); }
     p, li { color: var(--muted); }
@@ -37,72 +27,62 @@
       box-shadow: 0 8px 30px rgba(20, 32, 24, 0.06);
     }
     a { color: var(--accent); }
+    .warn {
+      border-left: 4px solid var(--accent);
+      padding-left: 12px;
+      margin: 1rem 0;
+    }
   </style>
 </head>
 <body>
   <main>
     <h1>Folia</h1>
-    <p class="meta">Zásady ochrany soukromí · platné od 13. 9. 2026</p>
+    <p class="meta">Zásady ochrany soukromí · platné od 15. 9. 2026 · balíček <code>com.rocketcalories.app</code></p>
     <div class="card">
+      <div class="warn">
+        <p><strong>Zdravotní upozornění:</strong> Folia není zdravotnický prostředek a neslouží k diagnostice, léčbě ani prevenci onemocnění. Údaje o kaloriích, makrech, hmotnosti a cyklu jsou orientační. Zdravotní rozhodnutí konzultujte s lékařem nebo kvalifikovaným odborníkem.</p>
+      </div>
+
       <p>
-        Folia (balíček <code>com.rocketcalories.app</code>) je mobilní aplikace pro sledování
-        stravy, makroživin, hmotnosti a (volitelně) menstruačního cyklu.
-        <strong>Nemáme vlastní cloud pro uživatelská data</strong> — data zůstávají ve vašem telefonu,
-        pokud sami nezapnete zálohu na váš Google Disk.
+        Folia je mobilní aplikace pro kalorické tabulky, jídelníček a hmotnost.
+        <strong>Nemáme vlastní cloud pro uživatelské profily</strong> — osobní data zůstávají ve vašem telefonu,
+        pokud sami nezapnete šifrovanou zálohu na váš Google Disk.
       </p>
 
-      <h2>1. Jaká data aplikace zpracovává</h2>
+      <h2>1. Data v zařízení</h2>
       <ul>
-        <li>Profil a cíle (věk, pohlaví, výška, hmotnost, tempo změny váhy, makro cíle)</li>
-        <li>Jídelníček a potraviny (včetně vlastních položek)</li>
-        <li>Historie hmotnosti</li>
-        <li>Volitelně údaje o cyklu (začátek/délka menstruace) — pouze pokud jste žena a funkci používáte</li>
-        <li>Technické logy chyb pouze lokálně v zařízení (neodesíláme analytiku třetím stranám)</li>
+        <li><strong>SQLCipher (šifrovaná Room DB)</strong> — jídelníček, potraviny (včetně vlastních fotek WebP), hmotnost, cvičení, cíle, tělesné míry. Klíč je v Android Keystore.</li>
+        <li><strong>DataStore</strong> — hydratace, menstruační cyklus, téma, zámek aplikace, preference Health Connect. Systémová cloudová záloha Androidu je vypnutá.</li>
       </ul>
 
-      <h2>2. Kde data žijí</h2>
+      <h2>2. Zpracování na zařízení</h2>
       <ul>
-        <li><strong>Jen v telefonu (výchozí):</strong> Room databáze a preference v zařízení. Při odinstalaci zmizí.</li>
-        <li><strong>Volitelná záloha Google Disk:</strong> po vašem přihlášení se JSON snapshot uloží do skryté složky
-          <em>App Data</em> na <strong>vašem</strong> Google účtu (scope <code>drive.appdata</code>). Folia k těmto datům
-          nemá přístup mimo vaše zařízení a váš účet.</li>
-        <li>Automatická záloha Android Auto Backup je vypnutá.</li>
+        <li><strong>Google ML Kit Barcode Scanning</strong> — obraz z kamery se zpracovává lokálně kvůli EAN/UPC. Folia neodesílá snímky kamery ani fotky jídel na servery Folia.</li>
+        <li>Služby Google Play / ML Kit mohou podle podmínek Googlu shromažďovat diagnostické nebo provozní údaje — viz zásady Googlu.</li>
       </ul>
 
-      <h2>3. Oprávnění</h2>
+      <h2>3. Přenos dat (jen při použití funkce)</h2>
       <ul>
-        <li><strong>Internet</strong> — Open Food Facts, volitelně USDA FoodData Central, Google přihlášení / Disk</li>
-        <li><strong>Fotoaparát</strong> — skenování čárových kódů (zpracování na zařízení přes ML Kit)</li>
-        <li><strong>Health Connect (váha)</strong> — čtení/zápis hmotnosti pouze po vašem souhlasu</li>
+        <li><a href="https://world.openfoodfacts.org">Open Food Facts</a> — při hledání/skenu se odešle název nebo EAN; mohou se stáhnout nutriční údaje a fotka výrobku z jejich CDN.</li>
+        <li><a href="https://fdc.nal.usda.gov">USDA FoodData Central</a> — volitelný fallback přes HTTPS (API klíč je v APK).</li>
+        <li><strong>Google Sign-In / Drive App Data</strong> — jen po zapnutí zálohy; šifrovaný snapshot (včetně vlastních WebP) do <em>appDataFolder</em> vašeho účtu (scope <code>drive.appdata</code>).</li>
+        <li><strong>Health Connect</strong> — po souhlasu: čtení/zápis hmotnosti; čtení aktivně spálených kcal. Data zůstávají lokálně; Folia je neposílá na vlastní servery.</li>
       </ul>
 
-      <h2>4. Třetí strany</h2>
-      <ul>
-        <li><a href="https://world.openfoodfacts.org">Open Food Facts</a> — vyhledání balených potravin (ODbL)</li>
-        <li><a href="https://fdc.nal.usda.gov">USDA FoodData Central</a> — volitelné referenční potraviny</li>
-        <li>Google Sign-In / Google Drive — pouze pokud zapnete zálohu</li>
-        <li>Health Connect / výrobci zdraví (Samsung Health, Google Fit, …) — pouze pokud sync zapnete</li>
-      </ul>
-      <p>Folia neprodává osobní data a nepoužívá reklamu ani trackery třetích stran.</p>
+      <h2>4. Co neprovozujeme</h2>
+      <p>Vlastní cloud uživatelů, reklamy ani analytiku třetích stran pro prodej dat.</p>
 
       <h2>5. Uchování a smazání</h2>
-      <p>
-        Data můžete smazat odinstalací aplikace, smazáním zálohy ve svém Google Disku (App Data)
-        a odvoláním oprávnění Health Connect / Google v nastavení zařízení.
-      </p>
+      <p>Odinstalace, Soukromí → Smazat všechna lokální data, odvolání oprávnění Health Connect / Google, smazání App Data zálohy na Disku. Heslo zálohy (min. 12 znaků) není součástí APK.</p>
 
       <h2>6. Děti</h2>
       <p>Aplikace není určena dětem mladším 13 let.</p>
 
       <h2>7. Kontakt</h2>
-      <p>
-        Otázky k soukromí: použijte kontaktní e-mail uvedený na stránce aplikace ve Google Play,
-        nebo GitHub repository
-        <a href="https://github.com/Fjosif/RocketCalories">Fjosif/RocketCalories</a>.
-      </p>
+      <p>Kontaktní e-mail uveďte / použijte e-mail uvedený u aplikace ve Google Play. Zdrojový kód projektu (soukromý): GitHub uživatel Fjosif.</p>
 
       <h2>8. Změny</h2>
-      <p>Při podstatných změnách aktualizujeme toto znění a datum účinnosti na této stránce.</p>
+      <p>Podstatné změny zveřejníme aktualizací této stránky a data účinnosti.</p>
     </div>
   </main>
 </body>
